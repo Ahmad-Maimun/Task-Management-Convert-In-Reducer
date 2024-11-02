@@ -3,9 +3,10 @@ import Container from "../../components/container";
 import { Button, Table } from "flowbite-react";
 import TaskItem from "./TaskItem";
 import { ModalPopup } from "../../components/ModalPopup";
-import { useState } from "react";
+import { useReducer, useState } from "react";
 import { DeleteTasksModal } from "../../components/DeleteTasksModal";
 import TaskTableHeader from "./TaskTableHeader";
+import tasksReducer from "../../reducer/tasksReducer";
 
 function NoData() {
     return (
@@ -20,32 +21,32 @@ function NoData() {
 function TaskTable() {
     let [openModal, setOpenModal] = useState(false);
     let [openDeleteModal, setOpenDeleteModal] = useState(false);
-    let [tasks, setTasks] = useState([]);
     let [searchText, setSearchText] = useState("");
+    let [tasks, dispatch] = useReducer(tasksReducer, []);
+    
     let createHandler = (item) => {
-        let updateTasks = [...tasks, item];
-        setTasks(updateTasks.reverse());
+        dispatch({
+            type: 'added',
+            item
+        })
     };
     let editHandler = (data) => {
-        setTasks(
-            tasks.map((item) => {
-                if (data.id === item.id) {
-                    return data;
-                } else {
-                    return item;
-                }
-            })
-        );
+        dispatch({
+            type: 'edited',
+            data: data
+        })
     };
     let deleteHandler = (id) => {
-        setTasks(
-            tasks.filter((item) => {
-                return item.id != id;
-            })
-        );
+        dispatch({
+            type: 'deleted',
+            id
+        })
     };
     let deleteTask = () => {
-        setTasks([]);
+        dispatch({
+            type: 'clear_all_tasks',
+            task: []
+        })
     };
     let searchHandler = (text) => {
         setSearchText(text);

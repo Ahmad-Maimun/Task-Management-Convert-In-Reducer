@@ -9,7 +9,7 @@ function TaskTableHeader({ onSearch }) {
         <div className="flex justify-between items-center mt-2 mb-4">
             <h2 className="text-2xl font-bold pl-2 dark:text-white">Your Tasks</h2>
             <div className="max-w-lg">
-                <TextInput onChange={changeHandler} id="email4" type="email" rightIcon={IoSearch} required />
+                <TextInput onChange={changeHandler} id="email4" type="text" rightIcon={IoSearch} required />
             </div>
         </div>
     );
